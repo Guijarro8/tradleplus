@@ -3,6 +3,17 @@ import plotly.express as px
 import random
 
 
+DIRECTIONS_EMOJI = {
+    "North": "⬆️",
+    "South": "⬇️",
+    "East": "➡️",
+    "West": "⬅️",
+    "Northeast": "↗️",
+    "Northwest": "↖️",
+    "Southeast": "↘️",
+    "Southwest": "↙️",
+}
+
 color_dic= {'Animal Products':'#ed40f2',
             'Vegetable Products':'#f4ce0f',
             'Animal and Vegetable Bi-Products':'#edbd53',

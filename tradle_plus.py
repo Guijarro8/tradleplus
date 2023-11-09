@@ -5,7 +5,7 @@ import streamlit as st
 
 from datetime import datetime
 
-from src.utils import show_country, show_country_palo, get_random_colors
+from src.utils import DIRECTIONS_EMOJI, show_country, show_country_palo, get_random_colors
 #################################################
 # Wallpaper
 #################################################
@@ -164,8 +164,10 @@ if st.button("Enviar (Cada intento pierdes 2 puntos)", key="my_button", disabled
             st.session_state.text = st.session_state.text+ f'{str(st.session_state.intentos)} - <font color="green"> {selected_Country} </font><br>'
             st.session_state.text = st.session_state.text+ f'Has conseguido {puntos} puntos'
         else:
+            distance = countries_distances_df[Country_name][selected_Country]
+            direction = DIRECTIONS_EMOJI[countries_direction_df[Country_name][selected_Country]]
             st.session_state.intentos += 1
-            st.session_state.text = st.session_state.text+ f'{str(st.session_state.intentos)} - <font color="red"> {selected_Country} </font>- {countries_distances_df[Country_name][selected_Country]} km {countries_direction_df[Country_name][selected_Country]} <br>'
+            st.session_state.text = st.session_state.text+ f'{str(st.session_state.intentos)} - <font color="red"> {selected_Country} </font>- {distance} km {direction} <br>'
             if st.session_state.intentos == 6:
                 puntos = 0
                 st.session_state.text = st.session_state.text+ f'Has conseguido 0 puntos, el pais era {Country_name}'
