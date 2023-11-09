@@ -5,7 +5,7 @@ import streamlit as st
 
 from datetime import datetime
 
-from src.utils import show_country, show_country_palo, random_color
+from src.utils import show_country, show_country_palo, get_random_colors
 #################################################
 # Wallpaper
 #################################################
@@ -124,7 +124,7 @@ for i in range(min(st.session_state.graficos+1,6)):
     if len (df_Country)==0:
         st.write(f'No valid graphs of {selected_graph_type} found for this country, la vida es dura.')
     else:
-        random_colors = [random_color() for _ in range(len(df_Country))]
+        random_colors = get_random_colors(length=len(df_Country), seed=current_date)
 
         fig = graph_function(df_Country) if selected_graph_type =='Tradle' else graph_function(df_Country,selected_graph_type, random_colors) 
 
