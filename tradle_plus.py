@@ -218,5 +218,7 @@ if puntos:
     puntos = (
         20 - (st.session_state.intentos * 2) - puntos_graficos[st.session_state.graficos]
     )
-
-st.title(f"**Tienes {puntos} puntos**")
+estrellas= f"{puntos} - "
+for _ in range (puntos):
+    estrellas=estrellas+'⭐'
+st.write(f"** {estrellas}**")
