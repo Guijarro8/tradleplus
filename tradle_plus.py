@@ -1,27 +1,38 @@
 import pandas
-import plotly.express as px
 import random
 import streamlit as st
 
 from datetime import datetime
 
-from src.utils import DIRECTIONS_EMOJI, show_country, show_country_palo, get_random_colors
+from src.utils import DIRECTIONS_EMOJI,show_piramid ,show_country,show_bar_deaths, show_country_palo, get_random_colors
 
 #################################################
 # Wallpaper
 #################################################
 background_image = "picture/wallpaper.jpg"
-st.markdown(
-    f"""
-    <style>
-    .stApp {{
-        background-image: url("{background_image}");
-        background-size: cover;
-    }}
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
+# import base64
+
+# @st.cache_data()
+# def get_base64_of_bin_file(bin_file):
+#     with open(bin_file, 'rb') as f:
+#         data = f.read()
+#     return base64.b64encode(data).decode()
+
+# def set_png_as_page_bg(png_file):
+#     bin_str = get_base64_of_bin_file(png_file)
+#     page_bg_img = '''
+#     <style>
+#     body {
+#     background-image: url("data:image/png;base64,%s");
+#     background-size: cover;
+#     }
+#     </style>
+#     ''' % bin_str
+    
+#     st.markdown(page_bg_img, unsafe_allow_html=True)
+#     return
+
+# set_png_as_page_bg('picture/wallpaper.jpg')
 st.title("Tradle plus")
 
 #################################################
@@ -40,7 +51,7 @@ graph_data_mapping = {
     "Tradle": {"data_file": "data/all_countries.csv", "graph_function": show_country},
     "AGE 2022": {
         "data_file": ("data/country_data_palo.xlsx", 0),
-        "graph_function": show_country_palo,
+        "graph_function": show_piramid,
     },
     "SURFACE 2019": {
         "data_file": ("data/country_data_palo.xlsx", 1),
@@ -52,7 +63,7 @@ graph_data_mapping = {
     },
     "DEATHS BY AGE 2021": {
         "data_file": ("data/country_data_palo.xlsx", 3),
-        "graph_function": show_country_palo,
+        "graph_function": show_bar_deaths,
     },
     "EMIGRANTES RESIDENTES 2020": {
         "data_file": ("data/country_data_palo.xlsx", 4),
@@ -68,9 +79,7 @@ if "data" not in st.session_state:
         else:
             data_file_path, sheet_number = dicc["data_file"]
             data[table] = pandas.read_excel(data_file_path, sheet_number)
-            xls = pandas.ExcelFile(data_file_path)
-            sheet_name = xls.sheet_names[sheet_number]
-            if sheet_name == "SURFACE 2019":
+            if table == "SURFACE 2019":
                 data["SURFACE 2019"] = data["SURFACE 2019"].drop(columns=["Total km^2"])
             data[table] = data[table].melt(id_vars="Country")
     st.session_state.data = data
@@ -135,16 +144,11 @@ for i in range(min(st.session_state.graficos + 1, 6)):
 
         fig = (
             graph_function(df_Country)
-            if selected_graph_type == "Tradle"
+            if selected_graph_type in ["Tradle","DEATHS BY AGE 2021","AGE 2022"]
             else graph_function(df_Country, selected_graph_type, random_colors)
         )
 
         st.plotly_chart(fig)
-
-
-############################################
-# nuevos_graficos
-############################################
 
 
 ##############################################################
@@ -152,9 +156,16 @@ for i in range(min(st.session_state.graficos + 1, 6)):
 ##################################################################
 
 
-Country_namelist = data["Tradle"].Country.unique()
+Country_namelist = list(data["Tradle"].Country.unique())
 Country_namelist.sort()
-selected_Country = st.selectbox("Selecciona un pais:", Country_namelist)
+# Agregar una opción vacía al principio de la lista
+Country_namelist.insert(0, "")
+
+# Crear el cuadro desplegable con la opción predeterminada vacía
+
+selected_Country = st.selectbox("Selecciona un país:", Country_namelist, index=0, key="country_selector")
+
+
 
 # Agregar un botón
 
@@ -172,7 +183,7 @@ if st.button(
     disabled=st.session_state.intentos >= 7,
 ):
 
-    if st.session_state.intentos <= 7:
+    if st.session_state.intentos <= 7 and selected_Country != "" :
         if selected_Country == Country_name:
             # exito
             st.session_state.text = (
@@ -188,8 +199,10 @@ if st.button(
             st.session_state.intentos += 1
             st.session_state.text = (
                 st.session_state.text
-                + f'{str(st.session_state.intentos)} - <font color="red"> {selected_Country} </font>- {countries_distances_df[Country_name][selected_Country]} km {countries_direction_df[Country_name][selected_Country]} <br>'
+                + f'{str(st.session_state.intentos)} - <font color="red"> {selected_Country} </font>- {distance} km {direction} <br>'
             )
+            selected_Country = ""
+
 
             if st.session_state.intentos == 6:
                 puntos = 0
