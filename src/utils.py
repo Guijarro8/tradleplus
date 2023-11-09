@@ -73,5 +73,10 @@ def show_country_palo(df_country,name_df,random_colors):
     return fig
     
 def random_color():
-    
+
     return f'rgb({random.randint(0, 255)}, {random.randint(0, 255)}, {random.randint(0, 255)})'
+
+def get_random_colors(length, seed=None):
+    if seed:
+        random.seed(seed)
+    return [random_color() for _ in range(length)]
