@@ -5,7 +5,7 @@ import streamlit as st
 
 from datetime import datetime
 
-from src.utils import show_country, show_country_palo, random_color
+from src.utils import DIRECTIONS_EMOJI, show_country, show_country_palo, get_random_colors
 
 #################################################
 # Wallpaper
@@ -130,7 +130,7 @@ for i in range(min(st.session_state.graficos + 1, 6)):
             f"No valid graphs of {selected_graph_type} found for this country, la vida es dura."
         )
     else:
-        random_colors = [random_color() for _ in range(len(df_Country))]
+        random_colors = get_random_colors(length=len(df_Country), seed=current_date)
 
         fig = (
             graph_function(df_Country)
@@ -182,11 +182,14 @@ if st.button(
                 st.session_state.text + f"Has conseguido {puntos} puntos"
             )
         else:
+            distance = countries_distances_df[Country_name][selected_Country]
+            direction = DIRECTIONS_EMOJI[countries_direction_df[Country_name][selected_Country]]
             st.session_state.intentos += 1
             st.session_state.text = (
                 st.session_state.text
                 + f'{str(st.session_state.intentos)} - <font color="red"> {selected_Country} </font>- {countries_distances_df[Country_name][selected_Country]} km {countries_direction_df[Country_name][selected_Country]} <br>'
             )
+
             if st.session_state.intentos == 6:
                 puntos = 0
                 st.session_state.text = (

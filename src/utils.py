@@ -2,29 +2,39 @@ import plotly.express as px
 import random
 
 
-color_dic = {
-    "Animal Products": "#ed40f2",
-    "Vegetable Products": "#f4ce0f",
-    "Animal and Vegetable Bi-Products": "#edbd53",
-    "Foodstuffs": "#a0d447",
-    "Mineral Products": "#a53200",
-    "Chemical Products": "#ed40f2",
-    "Plastics and Rubbers": "#ff73ff",
-    "Animal Hides": "#75f1b4",
-    "Wood Products": "#dd0e31",
-    "Paper Goods": "#efdc81",
-    "Textiles": "#02a347",
-    "Footwear and Headwear": "#2cba0f",
-    "Stone And Glass": "#f57d41",
-    "Precious Metals": "#892eff",
-    "Metals": "#aa7329",
-    "Machines": "#2e97ff",
-    "Transportation": "#69c8ed",
-    "Instruments": "#9e0071",
-    "Miscellaneous": "#9c9fb2",
-    "Arts and Antiques": "#847290",
-    "Weapons": "#9cf2cf",
+
+DIRECTIONS_EMOJI = {
+    "North": "⬆️",
+    "South": "⬇️",
+    "East": "➡️",
+    "West": "⬅️",
+    "Northeast": "↗️",
+    "Northwest": "↖️",
+    "Southeast": "↘️",
+    "Southwest": "↙️",
 }
+
+color_dic= {'Animal Products':'#ed40f2',
+            'Vegetable Products':'#f4ce0f',
+            'Animal and Vegetable Bi-Products':'#edbd53',
+            'Foodstuffs':'#a0d447',
+            'Mineral Products':'#a53200',
+            'Chemical Products':'#ed40f2',
+            'Plastics and Rubbers':'#ff73ff',
+            'Animal Hides':'#75f1b4',
+            'Wood Products':'#dd0e31',
+            'Paper Goods':'#efdc81',
+            'Textiles':'#02a347',
+            'Footwear and Headwear':'#2cba0f',
+            'Stone And Glass':'#f57d41',
+            'Precious Metals':'#892eff',
+            'Metals':'#aa7329',
+            'Machines':'#2e97ff',
+            'Transportation':'#69c8ed',
+            'Instruments':'#9e0071',
+            'Miscellaneous':'#9c9fb2',
+            'Arts and Antiques':'#847290',
+            'Weapons':'#9cf2cf'}
 
 
 def show_country(df_country):
@@ -83,4 +93,11 @@ def show_country_palo(df_country, name_df, random_colors):
 
 def random_color():
 
-    return f"rgb({random.randint(0, 255)}, {random.randint(0, 255)}, {random.randint(0, 255)})"
+
+    return f'rgb({random.randint(0, 255)}, {random.randint(0, 255)}, {random.randint(0, 255)})'
+
+def get_random_colors(length, seed=None):
+    if seed:
+        random.seed(seed)
+    return [random_color() for _ in range(length)]
+
