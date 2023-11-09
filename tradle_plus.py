@@ -84,9 +84,10 @@ if "intentos" not in st.session_state:
     st.session_state.intentos = 0
 if "graficos" not in st.session_state:
     st.session_state.graficos = 0
-    st.session_state.lista_ploted = []
 puntos_graficos = {0: 0, 1: 1, 2: 2, 3: 4, 4: 6, 5: 8, 6: 8, 7: 8}
-
+puntos = (
+    20 - (st.session_state.intentos * 2) - puntos_graficos[st.session_state.graficos]
+)
 
 random.seed(current_date)
 Country_name = random.choice(data["Tradle"].Country.unique())
@@ -200,7 +201,9 @@ if st.button(
     # Display the styled text
 st.write(st.session_state.text, unsafe_allow_html=True)
 
-puntos = (
-    20 - (st.session_state.intentos * 2) - puntos_graficos[st.session_state.graficos]
-)
+if puntos:
+    puntos = (
+        20 - (st.session_state.intentos * 2) - puntos_graficos[st.session_state.graficos]
+    )
+
 st.title(f"**Tienes {puntos} puntos**")
