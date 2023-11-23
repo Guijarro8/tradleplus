@@ -79,8 +79,8 @@ if "data" not in st.session_state:
         else:
             data_file_path, sheet_number = dicc["data_file"]
             data[table] = pandas.read_excel(data_file_path, sheet_number)
-            if table == "SURFACE 2019":
-                data["SURFACE 2019"] = data["SURFACE 2019"].drop(columns=["Total km^2"])
+            # if table == "SURFACE 2019":
+            #     data["SURFACE 2019"] = data["SURFACE 2019"].drop(columns=["Total km^2"])
             data[table] = data[table].melt(id_vars="Country")
     st.session_state.data = data
 data = st.session_state.data
@@ -221,4 +221,4 @@ if puntos:
 estrellas= f"{puntos} - "
 for _ in range (puntos):
     estrellas=estrellas+'⭐'
-st.write(f"** {estrellas}**")
+st.write(f" {estrellas} ")
